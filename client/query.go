@@ -201,6 +201,17 @@ func (c *Client) GetBlockTxs(height int64) ([]*types.TxResponse, error) {
 	return txs, nil
 }
 
+func (c *Client) GetCurrentBLockAndTimestamp() (int64, int64, error) {
+	done := core.UseSdkConfigContext(c.GetAccountPrefix())
+	defer done()
+
+	status, err := c.getStatus()
+	if err != nil {
+		return 0, 0, err
+	}
+	return status.SyncInfo.LatestBlockHeight, status.SyncInfo.LatestBlockTime.Unix(), nil
+}
+
 func (c *Client) GetChainId() (string, error) {
 	done := core.UseSdkConfigContext(c.GetAccountPrefix())
 	defer done()
