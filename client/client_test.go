@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/stafihub/neutron-relay-sdk/common/log"
 
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	xWasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sirupsen/logrus"
 )
@@ -45,14 +45,14 @@ func getKeyring() (keyring.Keyring, error) {
 func TestQueryContract(t *testing.T) {
 	initClient()
 
-	res, err := c.QueryClient.AllContractState(context.Background(), &wasmtypes.QueryAllContractStateRequest{
+	res, err := c.queryClient.AllContractState(context.Background(), &xWasmTypes.QueryAllContractStateRequest{
 		Address: "neutron1jarq7kgdyd7dcfu2ezeqvg4w4hqdt3m5lv364d8mztnp9pzmwwwqjw7fvg",
 	})
 	if err != nil {
 		t.Error(err)
 	}
 	t.Log(res)
-	res2, err := c.QueryClient.SmartContractState(context.Background(), &wasmtypes.QuerySmartContractStateRequest{
+	res2, err := c.queryClient.SmartContractState(context.Background(), &xWasmTypes.QuerySmartContractStateRequest{
 		Address:   "neutron1jarq7kgdyd7dcfu2ezeqvg4w4hqdt3m5lv364d8mztnp9pzmwwwqjw7fvg",
 		QueryData: []byte(`{"balance":{"ica_addr":"cosmos15ver270ujn0hy43tr362xnsas5r7pemcm0g9nsyeadlt035eu9nq4u445u"}}`),
 	})
@@ -84,7 +84,7 @@ func TestEx(t *testing.T) {
 	}
 
 	msgs := []sdk.Msg{
-		&wasmtypes.MsgExecuteContract{
+		&xWasmTypes.MsgExecuteContract{
 			Sender:   "neutron1m9l358xunhhwds0568za49mzhvuxx9ux8xafx2",
 			Contract: "neutron1jarq7kgdyd7dcfu2ezeqvg4w4hqdt3m5lv364d8mztnp9pzmwwwqjw7fvg",
 			Msg:      bMsg,

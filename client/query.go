@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	xWasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/stafihub/neutron-relay-sdk/common/core"
 
 	ctypes "github.com/cometbft/cometbft/rpc/core/types"
@@ -36,6 +37,23 @@ func (c *Client) QueryTxByHash(hashHexStr string) (*types.TxResponse, error) {
 		return nil, err
 	}
 	return cc.(*types.TxResponse), nil
+}
+
+func (c *Client) QuerySmartContractState(contract string, req []byte) (*xWasmTypes.QuerySmartContractStateResponse, error) {
+	done := core.UseSdkConfigContext(c.GetAccountPrefix())
+	defer done()
+
+	cc, err := c.retry(func() (interface{}, error) {
+		return c.queryClient.SmartContractState(context.Background(), &xWasmTypes.QuerySmartContractStateRequest{
+			Address:   contract,
+			QueryData: req,
+		})
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return cc.(*xWasmTypes.QuerySmartContractStateResponse), nil
 }
 
 func (c *Client) QueryBondedDenom() (*xStakeTypes.QueryParamsResponse, error) {

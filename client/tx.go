@@ -3,11 +3,13 @@ package client
 import (
 	"fmt"
 
+	xWasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	clientTx "github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xAuthClient "github.com/cosmos/cosmos-sdk/x/auth/client"
 	xBankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+
 	"github.com/spf13/cobra"
 	"github.com/stafihub/neutron-relay-sdk/common/core"
 )
@@ -19,6 +21,29 @@ func (c *Client) SingleTransferTo(toAddr types.AccAddress, amount types.Coins) e
 	msg := xBankTypes.NewMsgSend(c.Ctx().GetFromAddress(), toAddr, amount)
 	cmd := cobra.Command{}
 	return clientTx.GenerateOrBroadcastTxCLI(c.Ctx(), cmd.Flags(), msg)
+}
+
+func (c *Client) SendContractExecuteMsg(contract string, msg []byte, amount types.Coins) (string, error) {
+	msgs := []types.Msg{
+		&xWasmTypes.MsgExecuteContract{
+			Sender:   c.clientCtx.FromAddress.String(),
+			Contract: contract,
+			Msg:      msg,
+			Funds:    amount,
+		},
+	}
+
+	txbts, err := c.ConstructAndSignTx(msgs...)
+	if err != nil {
+		return "", err
+	}
+
+	txHash, err := c.BroadcastTx(txbts)
+	if err != nil {
+		return "", err
+	}
+
+	return txHash, nil
 }
 
 func (c *Client) BroadcastTx(tx []byte) (string, error) {
@@ -82,24 +107,6 @@ func (c *Client) ConstructAndSignTx(msgs ...types.Msg) ([]byte, error) {
 		return nil, err
 	}
 	return txBytes, nil
-}
-
-func (c *Client) GetTxMemo(txBts []byte) (string, error) {
-	done := core.UseSdkConfigContext(c.GetAccountPrefix())
-	defer done()
-
-	var memoInTx string
-	tx, err := c.GetTxConfig().TxDecoder()(txBts)
-	if err != nil {
-		return "", err
-	}
-	memoTx, ok := tx.(types.TxWithMemo)
-	if !ok {
-		return "", fmt.Errorf("tx is not type TxWithMemo")
-	}
-
-	memoInTx = memoTx.GetMemo()
-	return memoInTx, nil
 }
 
 func (c *Client) CalculateGas(txf clientTx.Factory, msgs ...types.Msg) (uint64, error) {

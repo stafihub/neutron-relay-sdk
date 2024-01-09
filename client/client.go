@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	wtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	xWasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	rpcClient "github.com/cometbft/cometbft/rpc/client"
 	rpcHttp "github.com/cometbft/cometbft/rpc/client/http"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -20,8 +20,8 @@ import (
 
 type Client struct {
 	clientCtx           client.Context
-	MsgClient           wtypes.MsgClient
-	QueryClient         wtypes.QueryClient
+	msgClient           xWasmTypes.MsgClient
+	queryClient         xWasmTypes.QueryClient
 	rpcClientList       []rpcClient.Client
 	gasPrice            string
 	denom               string
@@ -107,8 +107,8 @@ func NewClient(k keyring.Keyring, fromName, gasPrice, accountPrefix string, endP
 			return nil, err
 		}
 
-		retClient.MsgClient = wtypes.NewMsgClient(retClient.clientCtx)
-		retClient.QueryClient = wtypes.NewQueryClient(retClient.clientCtx)
+		retClient.msgClient = xWasmTypes.NewMsgClient(retClient.clientCtx)
+		retClient.queryClient = xWasmTypes.NewQueryClient(retClient.clientCtx)
 	} else {
 		initClientCtx := client.Context{}.
 			WithCodec(encodingConfig.Marshaler).
@@ -138,7 +138,7 @@ func NewClient(k keyring.Keyring, fromName, gasPrice, accountPrefix string, endP
 			return nil, err
 		}
 		retClient.clientCtx = retClient.clientCtx.WithChainID(chainId)
-		retClient.QueryClient = wtypes.NewQueryClient(retClient.clientCtx)
+		retClient.queryClient = xWasmTypes.NewQueryClient(retClient.clientCtx)
 	}
 	return retClient, nil
 }
