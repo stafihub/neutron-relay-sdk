@@ -175,9 +175,6 @@ func (c *Client) GetTxs(events []string, page, limit int, orderBy string) (*type
 }
 
 func (c *Client) GetBlockTxs(height int64) ([]*types.TxResponse, error) {
-	done := core.UseSdkConfigContext(c.GetAccountPrefix())
-	defer done()
-
 	// tendermint max limit 100
 	txs := make([]*types.TxResponse, 0)
 	limit := 50
