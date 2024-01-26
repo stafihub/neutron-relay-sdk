@@ -9,6 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
+	authz "github.com/cosmos/cosmos-sdk/x/authz/module"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/cosmos/cosmos-sdk/x/capability"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
@@ -25,6 +26,8 @@ import (
 	interChain "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts"
 	ibcTransfer "github.com/cosmos/ibc-go/v7/modules/apps/transfer"
 	ibcCore "github.com/cosmos/ibc-go/v7/modules/core"
+	ibcTendermint "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
+	"github.com/neutron-org/neutron/v2/x/interchainqueries"
 )
 
 // EncodingConfig specifies the concrete encoding types to use for a given app.
@@ -42,8 +45,9 @@ func MakeEncodingConfig() EncodingConfig {
 	encodingConfig := makeEncodingConfig()
 	std.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	std.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-	moduleBasics := module.NewBasicManager( //codec need
+	moduleBasics := module.NewBasicManager( // codec need
 		auth.AppModuleBasic{},
+		authz.AppModuleBasic{},
 		bank.AppModuleBasic{},
 		capability.AppModuleBasic{},
 		crisis.AppModuleBasic{},
@@ -57,10 +61,12 @@ func MakeEncodingConfig() EncodingConfig {
 		slashing.AppModuleBasic{},
 		staking.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
+		interchainqueries.AppModuleBasic{},
 
 		ibcTransfer.AppModuleBasic{},
 		ibcCore.AppModuleBasic{},
 		interChain.AppModuleBasic{},
+		ibcTendermint.AppModuleBasic{},
 		wasm.AppModuleBasic{},
 	)
 	moduleBasics.RegisterLegacyAminoCodec(encodingConfig.Amino)
