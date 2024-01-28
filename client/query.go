@@ -10,7 +10,7 @@ import (
 	"time"
 
 	xWasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	"github.com/stafihub/neutron-relay-sdk/common/core"
+	"github.com/stafihub/rtoken-relay-core/common/core"
 
 	ctypes "github.com/cometbft/cometbft/rpc/core/types"
 	"github.com/cosmos/cosmos-sdk/client"

@@ -11,7 +11,7 @@ import (
 	xBankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
 	"github.com/spf13/cobra"
-	"github.com/stafihub/neutron-relay-sdk/common/core"
+	"github.com/stafihub/rtoken-relay-core/common/core"
 )
 
 func (c *Client) SingleTransferTo(toAddr types.AccAddress, amount types.Coins) error {
