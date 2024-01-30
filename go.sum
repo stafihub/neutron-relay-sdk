@@ -1241,8 +1241,6 @@ github.com/nats-io/nuid v1.0.1/go.mod h1:19wcPz3Ph3q0Jbyiqsd0kePYG7A95tJPxeL+1OS
 github.com/nbutton23/zxcvbn-go v0.0.0-20210217022336-fa2cb2858354/go.mod h1:KSVJerMDfblTH7p5MZaTt+8zaT2iEk3AkVb9PQdZuE8=
 github.com/neilotoole/errgroup v0.1.6/go.mod h1:Q2nLGf+594h0CLBs/Mbg6qOr7GtqDK7C2S41udRnToE=
 github.com/neutron-org/admin-module v1.0.0 h1:mmX5U6jz4rX+lk8SB5Bx0Lsugu9bh4PCREMnVkLQoIs=
-github.com/neutron-org/cosmos-sdk v0.47.6-neutron h1:agxUiBWlAGQf5+8A7e5omYrpgbylL+SoSQlCVuQTd3Y=
-github.com/neutron-org/cosmos-sdk v0.47.6-neutron/go.mod h1:7BmlRp0txKo2UZ01OLq4DGEjgLDiPgmpRpjLOq89Jys=
 github.com/neutron-org/neutron/v2 v2.0.2 h1:idlFIi1FYKdSK1cCG9XUlKqCKpuPisb+oNq6TVjCaX0=
 github.com/neutron-org/neutron/v2 v2.0.2/go.mod h1:FmWEGzhPxQ1avbLkfCirrY02DmcGW/StxxQquobm6+0=
 github.com/neutron-org/wasmd v0.45.0 h1:K3WpYYTP9Msd7cLtdIau8VBUW1n1CC1qC/yaKPCYJsQ=
@@ -1531,6 +1529,8 @@ github.com/spf13/viper v1.12.0/go.mod h1:b6COn30jlNxbm/V2IqWiNWkJ+vZNiMNksliPCiu
 github.com/spf13/viper v1.16.0 h1:rGGH0XDZhdUOryiDWjmIvUSWpbNqisK8Wk0Vyefw8hc=
 github.com/spf13/viper v1.16.0/go.mod h1:yg78JgCJcbrQOvV9YLXgkLaZqUidkY9K+Dd1FofRzQg=
 github.com/ssgreg/nlreturn/v2 v2.2.1/go.mod h1:E/iiPB78hV7Szg2YfRgyIrk1AD6JVMTRkkxBiELzh2I=
+github.com/stafihub/cosmos-neutron-sdk v0.47.6-neutron-0.1.0 h1:XOy9NG02XUnJw8bY1TsLziNVKFgK9tkpB7Rk0xKVvjk=
+github.com/stafihub/cosmos-neutron-sdk v0.47.6-neutron-0.1.0/go.mod h1:7BmlRp0txKo2UZ01OLq4DGEjgLDiPgmpRpjLOq89Jys=
 github.com/stafihub/rtoken-relay-core/common v0.0.0-20221104093123-ca51d55b8f53 h1:x4Z+029JMLfAYf39UupxxtPuHp2Q8I903Ujc7sNG1vs=
 github.com/stafihub/rtoken-relay-core/common v0.0.0-20221104093123-ca51d55b8f53/go.mod h1:Ke6KI4qooU4Nco6PG2tjHaBaFKFqeAGS+BRgB71/GIw=
 github.com/stafihub/stafihub v0.1.0 h1:3EMn615R8mEg6eskZgok+67wKC11rD0sfIM+iRF8EpU=
