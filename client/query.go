@@ -56,6 +56,26 @@ func (c *Client) QuerySmartContractState(contract string, req []byte) (*xWasmTyp
 	return cc.(*xWasmTypes.QuerySmartContractStateResponse), nil
 }
 
+func (c *Client) QuerySmartContractStateWithHeight(contract string, req []byte,height int64) (*xWasmTypes.QuerySmartContractStateResponse, error) {
+	done := core.UseSdkConfigContext(c.GetAccountPrefix())
+	defer done()
+
+	client := c.Ctx().WithHeight(height)
+	queryClient:= xWasmTypes.NewQueryClient(client)
+
+	cc, err := c.retry(func() (interface{}, error) {
+		return queryClient.SmartContractState(context.Background(), &xWasmTypes.QuerySmartContractStateRequest{
+			Address:   contract,
+			QueryData: req,
+		})
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return cc.(*xWasmTypes.QuerySmartContractStateResponse), nil
+}
+
 func (c *Client) QueryBondedDenom() (*xStakeTypes.QueryParamsResponse, error) {
 	done := core.UseSdkConfigContext(c.GetAccountPrefix())
 	defer done()

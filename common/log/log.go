@@ -5,14 +5,14 @@ package log
 
 import (
 	"fmt"
-	"github.com/lestrrat-go/file-rotatelogs"
-	"github.com/sirupsen/logrus"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync"
 	"time"
+
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -77,7 +77,7 @@ func (hook *BtmHook) ioWrite(entry *logrus.Entry) error {
 }
 
 func clearLockFiles(logPath string) error {
-	files, err := ioutil.ReadDir(logPath)
+	files, err := os.ReadDir(logPath)
 	if os.IsNotExist(err) {
 		return nil
 	} else if err != nil {

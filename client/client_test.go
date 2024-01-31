@@ -24,10 +24,10 @@ func initClient() {
 	if err != nil {
 		logrus.Fatal(err)
 	}
-	// endpoints := []string{"https://rpc-palvus.pion-1.ntrn.tech:443"}
-	endpoints := []string{"http://127.0.0.1:26657"}
-	// netClient, err = NewClient(nil, "", "0.005untrn", accountPrefix, []string{"https://rpc-palvus.pion-1.ntrn.tech:443"}, log.NewLog("client", "neutron-relay"))
-	c, err = NewClient(kr, "demowallet1", "0.005untrn", "neutron", endpoints, log.NewLog("client", "neutron-relay"))
+	endpoints := []string{"https://rpc-palvus.pion-1.ntrn.tech:443"}
+	// endpoints := []string{"http://127.0.0.1:26657"}
+	c, err = NewClient(kr, "", "0.005untrn", "neutron", endpoints, log.NewLog("client", "neutron-sdk-test"))
+	// c, err = NewClient(kr, "demowallet1", "0.005untrn", "neutron", endpoints, log.NewLog("client", "neutron-relay"))
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -60,6 +60,45 @@ func TestQueryContract(t *testing.T) {
 		t.Error(err)
 	}
 	t.Log(res2)
+}
+
+func TestQueryContractWithHeight(t *testing.T) {
+	initClient()
+
+	res, err := c.QuerySmartContractState(
+		"neutron1lynzj6ym0y4ne69cm4m3zhmdyuql9clapcdx6k8kd3grxl494g0quy4xjq",
+		[]byte(`{"balance":{"address":"neutron1hs0ejaa8g83098zszskhuckvwxypyuhacl0aj2"}}`))
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("latest:", res)
+
+	res, err = c.QuerySmartContractStateWithHeight(
+		"neutron1lynzj6ym0y4ne69cm4m3zhmdyuql9clapcdx6k8kd3grxl494g0quy4xjq",
+		[]byte(`{"balance":{"address":"neutron1hs0ejaa8g83098zszskhuckvwxypyuhacl0aj2"}}`),
+		10595590)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("10595590:", res)
+
+	res, err = c.QuerySmartContractStateWithHeight(
+		"neutron1lynzj6ym0y4ne69cm4m3zhmdyuql9clapcdx6k8kd3grxl494g0quy4xjq",
+		[]byte(`{"balance":{"address":"neutron1hs0ejaa8g83098zszskhuckvwxypyuhacl0aj2"}}`),
+		10595591)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("10595591:", res)
+
+	res, err = c.QuerySmartContractStateWithHeight(
+		"neutron1lynzj6ym0y4ne69cm4m3zhmdyuql9clapcdx6k8kd3grxl494g0quy4xjq",
+		[]byte(`{"balance":{"address":"neutron1lwfzf8h0dkecltvz5wz6jn00t4te9qrhdvcwfa"}}`),
+		10595592)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("10595592:", res)
 }
 
 func TestEx(t *testing.T) {
