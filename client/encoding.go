@@ -27,6 +27,7 @@ import (
 	ibcTransfer "github.com/cosmos/ibc-go/v7/modules/apps/transfer"
 	ibcCore "github.com/cosmos/ibc-go/v7/modules/core"
 	ibcTendermint "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
+	"github.com/neutron-org/neutron/v2/x/feerefunder"
 	"github.com/neutron-org/neutron/v2/x/interchainqueries"
 )
 
@@ -62,6 +63,7 @@ func MakeEncodingConfig() EncodingConfig {
 		staking.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
 		interchainqueries.AppModuleBasic{},
+		feerefunder.AppModuleBasic{},
 
 		ibcTransfer.AppModuleBasic{},
 		ibcCore.AppModuleBasic{},

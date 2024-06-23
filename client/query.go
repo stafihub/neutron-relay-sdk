@@ -18,6 +18,7 @@ import (
 	xAuthTx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	xBankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	xStakeTypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	feerefunderTypes "github.com/neutron-org/neutron/v2/x/feerefunder/types"
 )
 
 const (
@@ -56,12 +57,12 @@ func (c *Client) QuerySmartContractState(contract string, req []byte) (*xWasmTyp
 	return cc.(*xWasmTypes.QuerySmartContractStateResponse), nil
 }
 
-func (c *Client) QuerySmartContractStateWithHeight(contract string, req []byte,height int64) (*xWasmTypes.QuerySmartContractStateResponse, error) {
+func (c *Client) QuerySmartContractStateWithHeight(contract string, req []byte, height int64) (*xWasmTypes.QuerySmartContractStateResponse, error) {
 	done := core.UseSdkConfigContext(c.GetAccountPrefix())
 	defer done()
 
 	client := c.Ctx().WithHeight(height)
-	queryClient:= xWasmTypes.NewQueryClient(client)
+	queryClient := xWasmTypes.NewQueryClient(client)
 
 	cc, err := c.retry(func() (interface{}, error) {
 		return queryClient.SmartContractState(context.Background(), &xWasmTypes.QuerySmartContractStateRequest{
@@ -282,6 +283,26 @@ func (c *Client) GetChainId() (string, error) {
 		return "", err
 	}
 	return status.NodeInfo.Network, nil
+}
+
+func (c *Client) GetTotalIbcFee() (types.Int, error) {
+	done := core.UseSdkConfigContext(c.GetAccountPrefix())
+	defer done()
+
+	cc, err := c.retry(func() (interface{}, error) {
+		client := c.Ctx().WithHeight(0)
+		queryClient := feerefunderTypes.NewQueryClient(client)
+		params := feerefunderTypes.QueryParamsRequest{}
+		return queryClient.Params(context.Background(), &params)
+	})
+	if err != nil {
+		return types.ZeroInt(), err
+	}
+	fee := cc.(*feerefunderTypes.QueryParamsResponse).Params.MinFee
+
+	totalFee := fee.AckFee.Add(fee.RecvFee...).Add(fee.TimeoutFee...)
+
+	return totalFee.AmountOf(denom), nil
 }
 
 func (c *Client) Retry(f func() (interface{}, error)) (interface{}, error) {

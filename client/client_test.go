@@ -20,14 +20,14 @@ func initClient() {
 	var err error
 	logrus.SetLevel(logrus.TraceLevel)
 
-	kr, err := getKeyring()
-	if err != nil {
-		logrus.Fatal(err)
-	}
+	// kr, err := getKeyring()
+	// if err != nil {
+	// 	logrus.Fatal(err)
+	// }
 	endpoints := []string{"https://rpc-palvus.pion-1.ntrn.tech:443"}
 	// endpoints := []string{"http://127.0.0.1:26657"}
-	c, err = NewClient(kr, "", "0.005untrn", "neutron", endpoints, log.NewLog("client", "neutron-sdk-test"))
-	// c, err = NewClient(kr, "demowallet1", "0.005untrn", "neutron", endpoints, log.NewLog("client", "neutron-relay"))
+	// netClient, err = NewClient(nil, "", "0.005untrn", accountPrefix, []string{"https://rpc-palvus.pion-1.ntrn.tech:443"}, log.NewLog("client", "neutron-relay"))
+	c, err = NewClient(nil, "", "0.005untrn", "neutron", endpoints, log.NewLog("client", "neutron-relay"))
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -143,4 +143,13 @@ func TestEx(t *testing.T) {
 	t.Log(txHash)
 
 	t.Log(txHash)
+}
+
+func TestGetTotalIbcFee(t *testing.T) {
+	initClient()
+	fee, err := c.GetTotalIbcFee()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(fee)
 }

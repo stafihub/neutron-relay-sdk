@@ -18,6 +18,8 @@ import (
 	"github.com/stafihub/neutron-relay-sdk/common/log"
 )
 
+var denom = "untrn"
+
 type Client struct {
 	clientCtx           client.Context
 	msgClient           xWasmTypes.MsgClient
@@ -93,7 +95,7 @@ func NewClient(k keyring.Keyring, fromName, gasPrice, accountPrefix string, endP
 		retClient.accountNumber = account.GetAccountNumber()
 
 		if accountPrefix == "neutron" {
-			retClient.setDenom("untrn")
+			retClient.setDenom(denom)
 		} else {
 			bondedDenom, err := retClient.QueryBondedDenom()
 			if err != nil {
@@ -124,7 +126,7 @@ func NewClient(k keyring.Keyring, fromName, gasPrice, accountPrefix string, endP
 		retClient.clientCtx = initClientCtx
 
 		if accountPrefix == "neutron" {
-			retClient.setDenom("untrn")
+			retClient.setDenom(denom)
 		} else {
 			bondedDenom, err := retClient.QueryBondedDenom()
 			if err != nil {
